@@ -1,32 +1,44 @@
 #!/usr/bin/python3
 """
+Base Model Module
+
+This module contains the base model class for other models.
 """
 import uuid
 from datetime import datetime
 class BaseModel:
+    """
+    Base Model Class
+
+    Attributes:
+        id (str): A unique identifier for the object.
+        created_at (datetime): The timestamp when the object was created.
+        updated_at (datetime): The timestamp when the object was last updated.
+    """
     def __init__(self):
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.utcnow()
-        self.updated_at = datetime.utcnow()
+         """Initialize a new BaseModel object."""
+         self.id = str(uuid.uuid4())
+         self.created_at = datetime.utcnow()
+         self.updated_at = datetime.utcnow()
 
     def save(self):
-        """
-        """
-        self.update_at = datetime.utcnow()
+        """Update the 'updated_at' attribute to the current time."""
+        self.updated_at = datetime.utcnow()
 
-    def to_dict(self):
-        """
-        """
-        inst_dict = self.__dict__.copy()
-        inst_dict["__class__"] = self.__class__.__name__
-        inst_dict["created_at"] = self.created_at.isoformat()
-        inst_dict["updated_at"] = self.updated_at.isoformat()
-        return inst_dict
     def __str__(self):
-        """
-        """
+        """Return a string representation of the object."""
         class_name = self.__class__.__name__
         return "[{}] ({}) {}".format(class_name, self.id, self.__dict__)
+
+    def to_dict(self):
+        """Convert the object to a dictionary."""
+        instance_dict = self.__dict__.copy()
+        instance_dict.update({
+            "__class__": self.__class__.__name__,
+            "created_at": self.created_at.isoformat(),
+            "updated_at": self.updated_at.isoformat()
+            })
+        return instance_dicit
 
 if __name__ == "__main__":
     my_model = BaseModel()
